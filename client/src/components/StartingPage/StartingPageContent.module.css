@@ -1,0 +1,15 @@
+.starting {
+  margin: 3rem auto;
+  text-align: center;
+}
+
+.starting h1 {
+  font-size: 5rem;
+}
+
+.image {
+  width: 40%;
+  height:40%;
+  max-width: 100%;
+  object-fit: contain;
+}

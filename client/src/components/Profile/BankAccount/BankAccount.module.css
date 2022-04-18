@@ -1,0 +1,49 @@
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  margin:0;
+  transition: 0.3s;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20rem;
+}
+
+.cardTitle {
+  font-weight: bold;
+  background-color:brown;
+  color:wheat;
+  padding: 20px;
+}
+
+ul {
+  margin: 0; /* To remove default bottom margin */ 
+  padding: 0; /* To remove default left padding */
+}
+
+.cardItem {
+  list-style: none;
+  padding: 0.5rem;
+  margin:0;
+  font-weight:500;
+  display: flex;
+  flex-direction: row;
+}
+
+.rightAlign {
+  margin-left: auto;
+  margin-right: 0;
+  padding: 0.5 rem;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(173, 8, 8, 0.5);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px 16px;
+}
