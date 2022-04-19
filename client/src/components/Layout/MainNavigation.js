@@ -31,10 +31,30 @@ const MainNavigation = () => {
             </li>
           )}
           {isLoggedIn && (
+            <div className={classes.dropdown}>
+              <button className={classes.dropbtn}>Account</button>
+              <div className={classes.dropdownContent}>
+                <li>
+                  <Link to="/openAccount">Open Account</Link>
+                </li>
+                <li>
+                  <Link to="#">Deposit</Link>
+                </li>
+                <li>
+                  <Link to="#">Withdraw</Link>
+                </li>
+                <li>
+                  <Link to="#">Transfer</Link>
+                </li>
+              </div>
+            </div>
+          )}
+          {isLoggedIn && (
             <li>
               <Link to="/profile">Profile</Link>
             </li>
           )}
+
           {isLoggedIn && (
             <li>
               <button onClick={logoutHandler}>Logout</button>

@@ -8,6 +8,7 @@ const UserProfile = () => {
   const authCtx = useContext(AuthContext);
   const history = useHistory();
   const [userInformation, setUserInformation] = useState([]);
+
   useEffect(() => {
     fetch("http://localhost:5000/user", {
       headers: {
@@ -18,6 +19,7 @@ const UserProfile = () => {
         if (res.ok) {
           return res.json();
         } else {
+          console.log("Token expired", res.status);
           throw new Error(res.status);
         }
       })
@@ -27,9 +29,9 @@ const UserProfile = () => {
       })
       .catch((err) => {
         // token expired, log the user out
-        if (err.message === 401) {
+        if (err.message === "401") {
           authCtx.logout();
-          history.replace("/");
+          history.replace("/login");
         }
       });
   }, []);

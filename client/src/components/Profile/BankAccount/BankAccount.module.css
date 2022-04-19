@@ -1,7 +1,7 @@
 .card {
   /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  margin:0;
+  margin: 0.5rem;
   transition: 0.3s;
   list-style: none;
   display: flex;
@@ -26,7 +26,6 @@ ul {
 .cardItem {
   list-style: none;
   padding: 0.5rem;
-  margin:0;
   font-weight:500;
   display: flex;
   flex-direction: row;

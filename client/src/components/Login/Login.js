@@ -14,10 +14,6 @@ const AuthForm = () => {
   const [isValid, setIsValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState(["", true]);
 
-  const switchAuthModeHandler = () => {
-    setIsLogin((prevState) => !prevState);
-  };
-
   const submitHandler = (event) => {
     event.preventDefault();
 
@@ -62,7 +58,6 @@ const AuthForm = () => {
           }
         })
         .then((data) => {
-          // const expirationTime = new Date((new Date.))
           // set access_token to auth-context
           authCtx.login(data.access_token);
           history.replace("/profile");
@@ -99,11 +94,7 @@ const AuthForm = () => {
             <button>{isLogin ? "Login" : "Create Account"}</button>
           )}
           {isLoading && <p>Sending request...</p>}
-          <button
-            type="button"
-            className={classes.toggle}
-            onClick={switchAuthModeHandler}
-          ></button>
+          <button type="button" className={classes.toggle}></button>
         </div>
       </form>
     </section>

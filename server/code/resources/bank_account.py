@@ -35,15 +35,13 @@ class OpenBankAccount(Resource):
     @classmethod
     @jwt_required()
     def post(cls):
-
         data = cls.parser.parse_args()
         user_id = get_jwt_identity()
-        
         how_many_accounts = BankAccountModel.get_number_of_accounts_by_user_id(user_id)
-        
-        # length of passcode must be 4
-        if len(data['passcode']) != 4:
-            return {'message': 'invalid passcode'}
+
+        # length of passcode must be 4 and must be digit
+        if len(data['passcode']) != 4 or not data['passcode'].isdigit():
+            return {'message': 'Must be a 4-digit passcode'}, 400
             
         # no more than 3 banking accounts allowed.
         if how_many_accounts['accounts'] < 3:

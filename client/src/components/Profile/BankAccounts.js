@@ -27,9 +27,9 @@ function BankAccountList() {
       })
       .catch((err) => {
         // token expired, log the user out
-        if (err.message === 401) {
+        if (err.message === "401") {
           authCtx.logout();
-          history.replace("/");
+          history.replace("/login");
         }
       });
   }, []);

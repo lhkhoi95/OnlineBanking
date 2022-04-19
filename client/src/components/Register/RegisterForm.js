@@ -50,21 +50,25 @@ const AuthForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-      }).then((res) => {
-        if (res.ok) {
-          setIsValid(true);
-          console.log("OK");
+      })
+        .then((res) => {
+          if (res.ok) {
+            setIsValid(true);
+            return res.json();
+          } else {
+            return res.json().then((data) => {
+              setIsValid(false);
+              // show an error modal
+              if (data && data.message) {
+                setErrorMessage([data.message, false]);
+              }
+            });
+          }
+        })
+        .then((data) => {
+          console.log(data);
           history.replace("/login");
-        } else {
-          return res.json().then((data) => {
-            setIsValid(false);
-            // show an error modal
-            if (data && data.message) {
-              setErrorMessage([data.message, false]);
-            }
-          });
-        }
-      });
+        });
     }
 
     setIsLoading(false);
