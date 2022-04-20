@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import BankAccount from "./BankAccount/BankAccount";
+import AuthForm from "../Login/Login";
 
 function BankAccountList() {
   const [bankAccounts, setBankAccounts] = useState([{}, {}, {}]);
@@ -28,6 +29,7 @@ function BankAccountList() {
       .catch((err) => {
         // token expired, log the user out
         if (err.message === "401") {
+          alert("Token expired. Please login again");
           authCtx.logout();
           history.replace("/login");
         }

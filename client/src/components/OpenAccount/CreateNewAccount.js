@@ -52,6 +52,7 @@ function CreateNewAccount() {
         })
         .catch((err) => {
           if (err.message === "401") {
+            alert("Token expired. Please login again");
             authCtx.logout();
             history.replace("/login");
           }

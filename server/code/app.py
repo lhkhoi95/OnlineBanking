@@ -25,7 +25,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db' # create data.db fil
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # JWT-EXTENDED SETUP
 app.config["JWT_SECRET_KEY"] = "you-don't-know-this-secret-key-if-you-don't-look-at-it"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=3/3600)
 
 jwt = JWTManager(app)
 # Callback function to check if a JWT exists in the BLOCKLIST
