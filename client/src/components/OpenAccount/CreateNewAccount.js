@@ -11,7 +11,7 @@ function CreateNewAccount() {
   const history = useHistory();
   const authCtx = useContext(AuthContext);
 
-  const validatepincodes = (pincode, confirmPincode) => {
+  const validatePincodes = (pincode, confirmPincode) => {
     return pincode === confirmPincode;
   };
   // need submithandler for the form
@@ -19,7 +19,7 @@ function CreateNewAccount() {
     event.preventDefault();
     const enteredPincode = pincode.current.value;
     const reEnteredPincode = pincodeCheck.current.value;
-    if (!validatepincodes(enteredPincode, reEnteredPincode)) {
+    if (!validatePincodes(enteredPincode, reEnteredPincode)) {
       setIsValid(false);
       setErrorMessage("Inputs must match");
     } else {
@@ -94,9 +94,7 @@ function CreateNewAccount() {
       </form>
       <div className="error-message">
         {!isValid && <p className="text-danger">{errorMessage}</p>}
-        {isValid && (
-          <p className="text-success">Successfully opened a new bank account</p>
-        )}
+        {isValid && <p className="text-success">Bank account created</p>}
       </div>
     </div>
   );

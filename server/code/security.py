@@ -16,6 +16,14 @@ def validate_data(account, data, user_id, type):
     if how_many_accounts['accounts'] == 0:
         return {'message': f'You must open at least one banking account to'}, 400 # bad request
     
+    # check for invalid passcode
+    if not data.passcode.isdigit() or len(data.passcode) != 4:
+        return {'message': 'Invalid passcode'}, 400 # bad request
+    
+    # check if passcode is correct
+    if account.passcode != data['passcode']:
+        return {'message': 'Incorrect passcode'}, 400 # bad request
+    
     # check if bank_id belong to this user
     bankID_list = account.get_list_of_bank_ids(user_id) # return a list of tuples
     if (data['id'],) not in bankID_list:
@@ -23,14 +31,12 @@ def validate_data(account, data, user_id, type):
     
     # check if withdrawal amount is greater than 0 and less than or equal to balance.
     if type == "withdraw" and (data['money'] < 0 or data['money'] > account.balance):
-            return {'message': 'Withdraw amount is greater than balance'}, 400 # bad request
+            return {'message': 'Invalid amount'}, 400 # bad request
     
     # check if deposit amount is less than 0.
     if type == "deposit" and data['money'] <=0:
             return {'message': 'Cannot deposit negative amount'}, 400 # bad request
     
-    # check if passcode is correct
-    if account.passcode != data['passcode']:
-        return {'message': 'Incorrect passcode'}, 400 # bad request
+ 
     
     return {'message': 'data is valid'}, 200

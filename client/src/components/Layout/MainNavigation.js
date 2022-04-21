@@ -41,7 +41,7 @@ const MainNavigation = () => {
                   <Link to="#">Deposit</Link>
                 </li>
                 <li>
-                  <Link to="#">Withdraw</Link>
+                  <Link to="/withdraw">Withdraw</Link>
                 </li>
                 <li>
                   <Link to="#">Transfer</Link>

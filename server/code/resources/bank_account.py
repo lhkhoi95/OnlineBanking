@@ -48,9 +48,9 @@ class OpenBankAccount(Resource):
             account = BankAccountModel(user_id, data['passcode'])
             account.save_to_db()
         else:
-            return {'message': 'Exceed maximum of 3 banking accounts'}, 400 # bad request
+            return {'message': 'You can only open 3 bank accounts'}, 400 # bad request
         
-        return {'message': 'Successfully opened a new bank account'}, 201 # created
+        return {'message': 'Bank account created'}, 201 # created
         
 
 

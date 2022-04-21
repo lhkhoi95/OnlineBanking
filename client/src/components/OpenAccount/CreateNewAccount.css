@@ -1,10 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&family=Poppins&display=swap');
 .form-label {
     font-size: medium;
-}
-
-.form-control {
-    margin: 0.2rem;
+    margin-bottom: 0px;
 }
 
 div.mb-3 {
@@ -17,7 +14,7 @@ div.mb-3 {
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
-    padding: 2.5rem;
+    padding: 2rem 4rem 3rem 2rem;
     border-radius: 0% 0% 0% 0% / 0% 0% 0% 0% ;
     box-shadow: 20px 20px rgba(0,0,0,.15);
     transition: all .4s ease;
@@ -30,6 +27,5 @@ div.mb-3 {
 
 .error-message {
     position: absolute;
-    position: absolute; 
-    bottom: 0px;
+    bottom: 0;
 }

@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 
-class HistoryTransaction(Resource):
+class TransacionHistory(Resource):
     parser = reqparse.RequestParser()
 
     parser.add_argument(
