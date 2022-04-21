@@ -30,12 +30,12 @@ def validate_data(account, data, user_id, type):
         return {'message': 'This bank id does not belong to this user'}, 400 # bad request
     
     # check if withdrawal amount is greater than 0 and less than or equal to balance.
-    if type == "withdraw" and (data['money'] < 0 or data['money'] > account.balance):
+    if type == "withdraw" and (data['money'] <= 0 or data['money'] > account.balance):
             return {'message': 'Invalid amount'}, 400 # bad request
     
     # check if deposit amount is less than 0.
-    if type == "deposit" and data['money'] <=0:
-            return {'message': 'Cannot deposit negative amount'}, 400 # bad request
+    if type == "deposit" and data['money'] <= 0:
+            return {'message': 'Invalid amount'}, 400 # bad request
     
  
     

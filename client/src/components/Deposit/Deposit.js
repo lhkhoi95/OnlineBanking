@@ -1,10 +1,9 @@
 import { useContext, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
-import "./Withdraw.css";
+import "./Deposit.css";
 
-function Withdraw(props) {
-  // withdraw needs 3 inputs: id, passcode, and money
+function Deposit(props) {
   const bankID = useRef();
   const pincode = useRef();
   const money = useRef();
@@ -12,28 +11,24 @@ function Withdraw(props) {
   const history = useHistory();
   const [errorMessage, setErrorMessage] = useState();
   const [isValid, setIsValid] = useState(false);
+  const [selectedFile, setSelectedFile] = useState();
 
-  const withdrawHandler = (event) => {
+  const depositHandler = (event) => {
     event.preventDefault();
+
     const enteredPincode = pincode.current.value;
-    const enteredWithdrawAmount = money.current.value;
+    const enteredDepositAmount = money.current.value;
     const enteredBankID = bankID.current.value;
+
     console.log("Selected Bank ID = " + enteredBankID);
 
-    // props.accounts.forEach((account) => {
-    //   if (account.id.toString() === enteredBankID) {
-    //     setBalance(account.balance.toString());
-    //   }
-    // });
-    // console.log(balance);
-
-    fetch("http://localhost:5000/withdraw", {
+    fetch("http://localhost:5000/deposit", {
       method: "POST",
       // remember to include JSON.stringigy
       body: JSON.stringify({
         id: enteredBankID,
         passcode: enteredPincode,
-        money: enteredWithdrawAmount,
+        money: enteredDepositAmount,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -65,6 +60,13 @@ function Withdraw(props) {
       });
   };
 
+  const fileSelectedHandler = (event) => {
+    console.log(event.target.files);
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const fileUploadHandler = (event) => {};
+
   return (
     <div className="container">
       {props.accounts.length === 0 && (
@@ -72,8 +74,12 @@ function Withdraw(props) {
       )}
       {props.accounts.length !== 0 && (
         <div>
-          <h2>Withdraw Cash</h2>
-          <form onSubmit={withdrawHandler}>
+          <h2>Deposit Check</h2>
+          <form onSubmit={depositHandler}>
+            {/* <label className="form-label" htmlFor="pincode">
+              Check Image:
+            </label> */}
+            <input type="file" onChange={fileSelectedHandler}></input>
             <div className="mb-3">
               <select id="bankIDs" ref={bankID}>
                 {props.accounts.map((account, index) => {
@@ -100,7 +106,7 @@ function Withdraw(props) {
             </div>
             <div className="mb-3">
               <label className="form-label" htmlFor="money">
-                Amount
+                Amount on the check
               </label>
               <div className="input-group">
                 <div className="input-group-prepend">
@@ -119,7 +125,9 @@ function Withdraw(props) {
                 />
               </div>
             </div>
-            <button className="btn btn-primary">Withdraw</button>
+            <button onClick={fileUploadHandler} className="btn btn-primary">
+              Deposit
+            </button>
           </form>
         </div>
       )}
@@ -131,4 +139,4 @@ function Withdraw(props) {
   );
 }
 
-export default Withdraw;
+export default Deposit;

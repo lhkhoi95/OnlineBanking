@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import AuthContext from "./store/auth-context";
 import OpenBankAccount from "./pages/OpenBankAccountPage";
 import WithdrawPage from "./pages/WithdrawPage";
+import DepositPage from "./pages/DepositPage";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -39,6 +40,10 @@ function App() {
         </Route>
         <Route path="/withdraw">
           {authCtx.isLoggedIn && <WithdrawPage />}
+          {!authCtx.isLoggedIn && <LoginPage />}
+        </Route>
+        <Route path="/deposit">
+          {authCtx.isLoggedIn && <DepositPage />}
           {!authCtx.isLoggedIn && <LoginPage />}
         </Route>
         {/* protect front end pages from manually enter route on browser */}

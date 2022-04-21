@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import Withdraw from "../components/Withdraw/Withdraw";
 import AuthContext from "../store/auth-context";
 import { useHistory } from "react-router-dom";
+import Deposit from "../components/Deposit/Deposit";
 
-const WithdrawPage = () => {
+const DepositPage = () => {
   // we first need to fetch the bankIDList
   const authCtx = useContext(AuthContext);
   const [bankAccount, setBankAccount] = useState([]);
@@ -45,9 +45,9 @@ const WithdrawPage = () => {
 
   return (
     <div>
-      <Withdraw accounts={bankAccount} />;
+      <Deposit accounts={bankAccount} />;
     </div>
   );
 };
 
-export default WithdrawPage;
+export default DepositPage;

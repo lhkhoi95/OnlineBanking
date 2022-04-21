@@ -38,7 +38,7 @@ const MainNavigation = () => {
                   <Link to="/openAccount">Open Account</Link>
                 </li>
                 <li>
-                  <Link to="#">Deposit</Link>
+                  <Link to="/deposit">Deposit</Link>
                 </li>
                 <li>
                   <Link to="/withdraw">Withdraw</Link>

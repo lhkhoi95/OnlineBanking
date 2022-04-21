@@ -81,7 +81,7 @@ class BankAccountModel(db.Model):
             return {'message': 'Transaction complete'}, 200
         except:
             db.session.rollback() # to rollback all the changes.
-            return {'message': 'Cannot complete this transaction due to Internal Server Error'}, 500 # Internal Server Error
+            return {'message': 'Internal Server Error'}, 500 # Internal Server Error
     
     def close_this_account(self, bank_id):
         # delete all transaction histories associated with this bank_id
@@ -98,7 +98,7 @@ class BankAccountModel(db.Model):
             return {'message': f"Successfully deleted"}, 200 # OK
         except:
             db.session.rollback()
-            return {'message': 'Cannot complete this transaction due to Internal Server Error'}, 500 # Internal Server Error
+            return {'message': 'Internal Server Error'}, 500 # Internal Server Error
     
     @classmethod
     def get_number_of_accounts_by_user_id(cls, user_id):
