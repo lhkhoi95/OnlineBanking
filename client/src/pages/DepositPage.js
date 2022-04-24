@@ -45,7 +45,8 @@ const DepositPage = () => {
 
   return (
     <div>
-      <Deposit accounts={bankAccount} />;
+      {isLoaded && <Deposit accounts={bankAccount} />}
+      {!isLoaded && <p className="text-primary">Loading...</p>}
     </div>
   );
 };

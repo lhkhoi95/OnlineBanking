@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
+.table {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    background-color:#fcdcf7;
+}
+
+tbody, td, tfoot, th, thead, tr {
+    border-style:none;
+    border-width: 0;
+    text-align: center;
+}
+
+td {
+    overflow-x: auto;
+}
+tbody:nth-child(even) {background-color: #e6c8fa;}
+.table>:not(:first-child) {
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+}
+
+caption {
+    display: table-caption;
+    text-align: center;
+  }
+
+.submit-button {
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.submit-button:hover {
+    background-color: #262fb1;
+}

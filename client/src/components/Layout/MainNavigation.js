@@ -46,6 +46,9 @@ const MainNavigation = () => {
                 <li>
                   <Link to="#">Transfer</Link>
                 </li>
+                <li>
+                  <Link to="/transactions">Transactions</Link>
+                </li>
               </div>
             </div>
           )}

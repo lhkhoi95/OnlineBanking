@@ -70,7 +70,7 @@ function CreateNewAccount() {
           </label>
           <input
             placeholder="4-digit pincode"
-            type="text"
+            type="password"
             id="pincode"
             className="form-control"
             required
@@ -83,7 +83,7 @@ function CreateNewAccount() {
           </label>
           <input
             placeholder="Re-enter 4-digit pincode"
-            type="text"
+            type="password"
             id="pincodeConfirm"
             className="form-control"
             required

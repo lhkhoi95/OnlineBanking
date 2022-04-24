@@ -2,6 +2,7 @@ from re import T
 from db import db
 from models.user import UserModel
 from models.history import TransactionHistoryModel
+from models.delete_record import DeleteAccountModel
 from datetime import datetime
 
 class BankAccountModel(db.Model):
@@ -33,14 +34,14 @@ class BankAccountModel(db.Model):
         self.balance = balance
         self.passcode = passcode
         
-    def deposit(self, bank_id, money):
+    def deposit(self, bank_id, money, url):
         try:
             # retrieve account with given bank_id
             account = BankAccountModel.query.get(bank_id)
             # update balance
             account.balance += money
             # add to transaction history
-            transaction_history = TransactionHistoryModel(bank_id, f"+{money}", datetime.now())
+            transaction_history = TransactionHistoryModel(bank_id, f"+${money}", datetime.now(), url)
 
             transaction_history.save_to_db()
             db.session.commit()
@@ -57,7 +58,7 @@ class BankAccountModel(db.Model):
             # update balance
             account.balance -= money
             # add to transaction history
-            transaction_history = TransactionHistoryModel(bank_id, f"-{money}", datetime.now())
+            transaction_history = TransactionHistoryModel(bank_id, f"-${money}", datetime.now())
             transaction_history.save_to_db()
             db.session.commit()
             return {'message': 'Transaction complete'}, 200
@@ -74,7 +75,7 @@ class BankAccountModel(db.Model):
 
             # deposit money to the recipient and add to transaction history
             recipient_account.balance += money
-            transaction_history = TransactionHistoryModel(recipient_account.id, f"+{money}", datetime.now())
+            transaction_history = TransactionHistoryModel(recipient_account.id, f"+${money}", datetime.now())
             transaction_history.save_to_db()
 
             db.session.commit()
@@ -83,7 +84,7 @@ class BankAccountModel(db.Model):
             db.session.rollback() # to rollback all the changes.
             return {'message': 'Internal Server Error'}, 500 # Internal Server Error
     
-    def close_this_account(self, bank_id):
+    def close_this_account(self, bank_id, user_id):
         # delete all transaction histories associated with this bank_id
         transcations = TransactionHistoryModel.find_by_bank_id(bank_id)
         try:
@@ -94,6 +95,9 @@ class BankAccountModel(db.Model):
             # close the bank account associated with this bank_id
             account = self.query.filter_by(id=bank_id).first()
             db.session.delete(account)
+            # save the record to delete_records table
+            delete_record = DeleteAccountModel(user_id, bank_id, datetime.now())
+            delete_record.save_to_db()
             db.session.commit()
             return {'message': f"Successfully deleted"}, 200 # OK
         except:

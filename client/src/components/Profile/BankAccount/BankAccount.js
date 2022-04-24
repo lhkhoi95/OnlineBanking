@@ -11,7 +11,12 @@ function BankAccount(props) {
         </li>
         <li className={classes.cardItem}>
           <span>Balance:</span>
-          <span className={classes.rightAlign}>${props.balance}</span>
+          <span className={classes.rightAlign}>
+            {props.balance.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </span>
         </li>
       </ul>
     </div>

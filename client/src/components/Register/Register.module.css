@@ -1,3 +1,7 @@
+* {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+}
 .auth {
     margin: 3rem auto;
     width: 95%;

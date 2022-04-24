@@ -12,7 +12,7 @@ function Withdraw(props) {
   const history = useHistory();
   const [errorMessage, setErrorMessage] = useState();
   const [isValid, setIsValid] = useState(false);
-
+  
   const withdrawHandler = (event) => {
     event.preventDefault();
     const enteredPincode = pincode.current.value;

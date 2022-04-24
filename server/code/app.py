@@ -9,14 +9,15 @@ from resources.bank_account import (
     Deposit,
     TransferMoney,
     )
-# from resources.history import TransactionHistory
-from resources.test import Test
+from resources.history import TransacionHistory
+from resources.delete_record import DeleteHistory
 from flask_jwt_extended import JWTManager
 from datetime import timedelta
-from resources.test import Test
 from db import db
 from blocklist import BLOCKLIST
 from flask_cors import CORS
+
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -51,12 +52,13 @@ api.add_resource(UserLogout, '/logout') # http://127.0.0.1:5000/logout
 api.add_resource(User, '/user') # http://127.0.0.1:5000/user
 api.add_resource(OpenBankAccount, '/openBankAccount') # http://127.0.0.1:5000/openBankAccount
 api.add_resource(BankAccountList, '/bankAccounts') # http://127.0.0.1:5000/bankAccounts
+api.add_resource(TransacionHistory, '/history') #http://127.0.0.1:5000/history
 # api.add_resource(TransactionHistory, '/history') # http://127.0.0.1:5000/history
 api.add_resource(Deposit, '/deposit') # http://127.0.0.1:5000/deposit
 api.add_resource(WithDraw, '/withdraw') # http://127.0.0.1:5000/withdraw
 api.add_resource(TransferMoney, '/transfer') # http://127.0.0.1:5000/transfer
 api.add_resource(CloseBankAccount, '/account') # http://127.0.0.1:5000/account
-api.add_resource(Test, '/test') #test route
+api.add_resource(DeleteHistory, '/deleteRecord') # http://127.0.0.1:5000/deleteRecord
 
 if __name__ == '__main__':
     db.init_app(app)

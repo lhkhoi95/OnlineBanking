@@ -13,3 +13,8 @@
   max-width: 100%;
   object-fit: contain;
 }
+
+h1 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+}

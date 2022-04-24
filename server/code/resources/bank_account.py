@@ -3,24 +3,6 @@ from flask_restful import Resource, reqparse
 from models.bank_account import BankAccountModel
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from datetime import datetime
-# private variables for withdraw and deposit
-_bank_account_parser = reqparse.RequestParser()
-_bank_account_parser.add_argument("id",
-                    type=int,
-                    required=True,
-                    help="bank id cannot be left blank!"
-                    )
-_bank_account_parser.add_argument("passcode",
-                    type=str,
-                    required=True,
-                    help="passcode cannot be left blank!"
-                    )
-_bank_account_parser.add_argument("money",
-                    type=float,
-                    required=True,
-                    help="money cannot be left blank!"
-                    )
-
 
 # open a new banking account will require a passcode to be stored in the database.
 class OpenBankAccount(Resource):
@@ -69,8 +51,31 @@ class Deposit(Resource):
     @classmethod
     @jwt_required()
     def post(cls):
-
-        data = _bank_account_parser.parse_args()
+        bank_account_parser = reqparse.RequestParser()
+        bank_account_parser.add_argument("id",
+                            type=int,
+                            required=True,
+                            help="bank id cannot be left blank!"
+                            )
+        bank_account_parser.add_argument("passcode",
+                            type=str,
+                            required=True,
+                            help="passcode cannot be left blank!"
+                            )
+        bank_account_parser.add_argument("money",
+                            type=float,
+                            required=True,
+                            help="money cannot be left blank!"
+                            )
+        bank_account_parser.add_argument("url",
+                            type=str,
+                            required=True,
+                            help="check image url cannot be left blank!"
+                            )
+        
+        data = bank_account_parser.parse_args()
+        user_id = get_jwt_identity()
+        data = bank_account_parser.parse_args()
         user_id = get_jwt_identity()
         
         account = BankAccountModel.find_bank_account_by_bank_id(data['id'])
@@ -79,7 +84,7 @@ class Deposit(Resource):
         if data_check[0]['message'] != "data is valid":
             return data_check
 
-        message = account.deposit(data['id'], data['money'])
+        message = account.deposit(data['id'], data['money'], data['url'])
         return {'message': message[0]['message']}, message[1] # OK or 500
         
 # withdraw money from account
@@ -88,8 +93,23 @@ class WithDraw(Resource):
     @classmethod
     @jwt_required()
     def post(cls):
-
-        data = _bank_account_parser.parse_args()
+        bank_account_parser = reqparse.RequestParser()
+        bank_account_parser.add_argument("id",
+                            type=int,
+                            required=True,
+                            help="bank id cannot be left blank!"
+                            )
+        bank_account_parser.add_argument("passcode",
+                            type=str,
+                            required=True,
+                            help="passcode cannot be left blank!"
+                            )
+        bank_account_parser.add_argument("money",
+                            type=float,
+                            required=True,
+                            help="money cannot be left blank!"
+                            )
+        data = bank_account_parser.parse_args()
         user_id = get_jwt_identity()
         
         account = BankAccountModel.find_bank_account_by_bank_id(data['id'])
@@ -176,6 +196,6 @@ class CloseBankAccount(Resource):
         if data_check[0]['message'] != "data is valid":
             return data_check
         
-        message = account.close_this_account(data['id'])
+        message = account.close_this_account(data['id'], user_id)
         return {'message': message[0]['message']}, message[1] # OK or 500
 
