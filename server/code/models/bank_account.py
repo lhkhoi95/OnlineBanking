@@ -12,6 +12,7 @@ class BankAccountModel(db.Model):
     balance = db.Column(db.Float(precision=2))
     passcode = db.Column(db.String(), nullable=False) # allow 0001 to be stored in the DB
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete="CASCADE"))
+    is_active = db.Column(db.Boolean, unique=False, default=True)
     user = db.relationship('UserModel')
     
     # in parent class, kids = db.relationship('KidModel', parent)
@@ -26,13 +27,15 @@ class BankAccountModel(db.Model):
         return {
                 'id': self.id, 
                 'user_id': self.user_id,
-                'balance': self.balance
+                'balance': self.balance,
+                'is_active': self.is_active
         }
     
-    def __init__(self, user_id, passcode, balance=0):
+    def __init__(self, user_id, passcode, is_active=True, balance=0):
         self.user_id = user_id
         self.balance = balance
         self.passcode = passcode
+        self.is_active = is_active
         
     def deposit(self, bank_id, money, url):
         try:
@@ -41,7 +44,7 @@ class BankAccountModel(db.Model):
             # update balance
             account.balance += money
             # add to transaction history
-            transaction_history = TransactionHistoryModel(bank_id, f"+${money}", datetime.now(), url)
+            transaction_history = TransactionHistoryModel(bank_id, f"+${money}", datetime.now(), url, "Deposit")
 
             transaction_history.save_to_db()
             db.session.commit()
@@ -51,14 +54,13 @@ class BankAccountModel(db.Model):
             return {'message': 'Cannot deposit due to Internal Server Error'}, 500 # Internal Server Error
         
     def withdraw(self, bank_id, money):
-        # retrieve account with given bank_id
-    
-        account = BankAccountModel.query.get(bank_id)
         try:
+            # retrieve account with given bank_id
+            account = BankAccountModel.query.get(bank_id)
             # update balance
             account.balance -= money
             # add to transaction history
-            transaction_history = TransactionHistoryModel(bank_id, f"-${money}", datetime.now())
+            transaction_history = TransactionHistoryModel(bank_id, f"-${money}", datetime.now(), type="Withdraw")
             transaction_history.save_to_db()
             db.session.commit()
             return {'message': 'Transaction complete'}, 200
@@ -70,12 +72,12 @@ class BankAccountModel(db.Model):
         try:
             # withdraw money from the sender and add to transaction history
             self.balance -= money
-            transaction_history = TransactionHistoryModel(self.id, f"-{money}", datetime.now())
+            transaction_history = TransactionHistoryModel(self.id, f"-${money}", datetime.now(), type="Transfer")
             transaction_history.save_to_db()
 
             # deposit money to the recipient and add to transaction history
             recipient_account.balance += money
-            transaction_history = TransactionHistoryModel(recipient_account.id, f"+${money}", datetime.now())
+            transaction_history = TransactionHistoryModel(recipient_account.id, f"+${money}", datetime.now(), type="Transfer")
             transaction_history.save_to_db()
 
             db.session.commit()
@@ -85,30 +87,31 @@ class BankAccountModel(db.Model):
             return {'message': 'Internal Server Error'}, 500 # Internal Server Error
     
     def close_this_account(self, bank_id, user_id):
-        # delete all transaction histories associated with this bank_id
-        transcations = TransactionHistoryModel.find_by_bank_id(bank_id)
         try:
-            if transcations:
-                for transaction in transcations:
-                    db.session.delete(transaction)
-                    db.session.flush()
-            # close the bank account associated with this bank_id
+            # if transcations:
+            #     for transaction in transcations:
+            #         db.session.delete(transaction)
+            #         db.session.flush()
+            # # close the bank account associated with this bank_id
+            # account = self.query.filter_by(id=bank_id).first()
+            # db.session.delete(account)
+            # # save the record to delete_records table
+            # delete_record = DeleteAccountModel(user_id, bank_id, datetime.now())
+            # delete_record.save_to_db()
+            
             account = self.query.filter_by(id=bank_id).first()
-            db.session.delete(account)
-            # save the record to delete_records table
-            delete_record = DeleteAccountModel(user_id, bank_id, datetime.now())
-            delete_record.save_to_db()
+            transaction_history = TransactionHistoryModel(user_id, f"-${account.balance}", datetime.now(), type="Delete")
+            account.balance = 0 # the user cash out all money
+            account.is_active = False # Disable this account
+            # save to transaction history
+            transaction_history.save_to_db()
+            
             db.session.commit()
             return {'message': f"Successfully deleted"}, 200 # OK
         except:
             db.session.rollback()
             return {'message': 'Internal Server Error'}, 500 # Internal Server Error
     
-    @classmethod
-    def get_number_of_accounts_by_user_id(cls, user_id):
-        accountList = [x.json() for x in BankAccountModel.query.filter_by(user_id=user_id)]
-        return {'accounts': len(accountList)}
-
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -132,19 +135,29 @@ class BankAccountModel(db.Model):
     
     @classmethod
     def find_bank_account_by_bank_id(cls, bank_id):
-        return BankAccountModel.query.filter_by(id=bank_id).first()
+        return BankAccountModel.query.filter(BankAccountModel.id==bank_id, BankAccountModel.is_active).first()
     
     @classmethod
     def find_bank_accounts_by_user_id(cls, user_id):
-        return BankAccountModel.query.filter_by(user_id=user_id).all()
+        return BankAccountModel.query.filter(BankAccountModel.user_id==user_id, BankAccountModel.is_active).all()
 
     # return a list of tuples, each tuple contains a bank_id
     @classmethod
-    def get_list_of_bank_ids(cls, user_id):
+    def get_list_of_active_bank_ids(cls, user_id):
         return BankAccountModel.query.with_entities(
-                                BankAccountModel.id).filter_by(user_id=user_id).all()
+                                BankAccountModel.id).filter(BankAccountModel.user_id==user_id, BankAccountModel.is_active).all()
+        
+    # return a list of tuples, each tuple contains a bank_id
+    @classmethod
+    def get_list_of_all_bank_ids(cls, user_id):
+        return BankAccountModel.query.with_entities(
+                                BankAccountModel.id).filter(BankAccountModel.user_id==user_id).all()
         
     @classmethod
     def find_bank_by_user_id(cls, user_id):
-        return BankAccountModel.query.filter_by(user_id=user_id).all()
+        return BankAccountModel.query.filter(BankAccountModel.user_id==user_id, BankAccountModel.is_active).all()
 
+    @classmethod
+    def get_number_of_accounts_by_user_id(cls, user_id):
+        accountList = [x.json() for x in BankAccountModel.query.filter(BankAccountModel.user_id==user_id, BankAccountModel.is_active)]
+        return {'accounts': len(accountList)}

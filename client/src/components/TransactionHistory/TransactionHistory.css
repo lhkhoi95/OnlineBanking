@@ -11,6 +11,10 @@ tbody, td, tfoot, th, thead, tr {
     text-align: center;
 }
 
+th {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 td {
     overflow-x: auto;
 }

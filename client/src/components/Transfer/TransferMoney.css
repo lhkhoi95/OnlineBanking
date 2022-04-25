@@ -1,0 +1,14 @@
+.error-message {
+    position: relative;
+}
+
+div.error-message p {
+    padding-top: 10px;
+    max-height: inherit;
+    box-sizing:border-box;
+}
+
+.container {
+    border-radius: 50px;
+    color: rgb(17, 13, 22);
+}

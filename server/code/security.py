@@ -25,7 +25,7 @@ def validate_data(account, data, user_id, type):
         return {'message': 'Incorrect passcode'}, 400 # bad request
     
     # check if bank_id belong to this user
-    bankID_list = account.get_list_of_bank_ids(user_id) # return a list of tuples
+    bankID_list = account.get_list_of_active_bank_ids(user_id) # return a list of tuples
     if (data['id'],) not in bankID_list:
         return {'message': 'This bank id does not belong to this user'}, 400 # bad request
     

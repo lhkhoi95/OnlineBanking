@@ -100,20 +100,18 @@ function Deposit(props) {
     uploadToCloud();
   };
 
-  let content = (
-    <p className="text-primary">You need to open a bank account first</p>
-  );
+  let content = <p>You need to open a bank account first</p>;
   if (props.accounts.length !== 0) {
     content = (
       <div>
         <h2>Deposit Check</h2>
         <form onSubmit={depositHandler}>
-          <div class="mb-3">
-            <label for="formFile" class="form-label">
+          <div className="mb-3">
+            <label htmlFor="formFile" className="form-label">
               Image Check
             </label>
             <input
-              class="form-control"
+              className="form-control"
               onChange={(event) => {
                 uploadImage(event.target.files);
               }}

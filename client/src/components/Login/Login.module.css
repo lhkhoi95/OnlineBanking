@@ -3,10 +3,9 @@
     width: 95%;
     max-width: 25rem;
     border-radius: 6px;
-    background-color: #38015c;
+    background-image: linear-gradient(to right, rgba(84, 25, 221, 0.863), rgb(116, 23, 124));
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
     padding: 1rem;
-    text-align: center;
   }
   
   .auth h1 {
@@ -72,5 +71,8 @@
   }
 
   .failure {
-    color: #E61030;
+    color: #ff9900;
+    text-align: center;
+    font-size: large;
+    font-weight:bold;
   }

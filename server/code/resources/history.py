@@ -8,7 +8,7 @@ class TransacionHistory(Resource):
     def get(cls):
         user_id = get_jwt_identity()
         # get bank id list by user id
-        ids_list = BankAccountModel.get_list_of_bank_ids(user_id)
+        ids_list = BankAccountModel.get_list_of_all_bank_ids(user_id)
         history = []
         for bank_id in ids_list:
             transactions = TransactionHistoryModel.find_by_bank_id(bank_id[0])

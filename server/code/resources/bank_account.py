@@ -75,8 +75,6 @@ class Deposit(Resource):
         
         data = bank_account_parser.parse_args()
         user_id = get_jwt_identity()
-        data = bank_account_parser.parse_args()
-        user_id = get_jwt_identity()
         
         account = BankAccountModel.find_bank_account_by_bank_id(data['id'])
         

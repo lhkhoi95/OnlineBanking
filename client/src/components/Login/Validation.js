@@ -17,7 +17,7 @@ function Validation(props) {
     props.password.length < 6 ||
     props.password.length > 25
   ) {
-    message[0] = "Username and password must be between 6-25 characters";
+    message[0] = "Username and password must be between 6 to 25 characters";
     return message;
   } else {
     message[0] = "user is valid";

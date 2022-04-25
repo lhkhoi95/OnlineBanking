@@ -8,6 +8,7 @@ class TransactionHistoryModel(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow)
     bank_id = db.Column(db.Integer, db.ForeignKey('bank_accounts.id', ondelete="CASCADE"), nullable=False)
     url = db.Column(db.String)
+    type = db.Column(db.String, nullable=False)
     # in kid's class, parent = db.relationship('ParentModel', "kids")
     bank_account = db.relationship('BankAccountModel', back_populates="transactions")
 
@@ -18,15 +19,17 @@ class TransactionHistoryModel(db.Model):
             'bank_id': self.bank_id,
             'transfer_amount': self.transfer_amount,
             'date': date,
-            'url' : self.url
+            'url' : self.url,
+            'transaction_type': self.type 
         }
         
     # parameterized constructor
-    def __init__(self, bank_id, transfer_amount, date, url=""):
+    def __init__(self, bank_id, transfer_amount, date, url="", type=""):
         self.bank_id = bank_id
         self.transfer_amount = transfer_amount
         self.date = date
         self.url = url
+        self.type = type
         
     # retrieve all transaction histories with user_id    
     @classmethod

@@ -78,23 +78,27 @@ const AuthForm = () => {
       <form onSubmit={submitHandler}>
         <div className={classes.control}>
           <label htmlFor="username">Username</label>
-          <input type="text" id="username" required ref={userNameInputRef} />
+          <input
+            type="text"
+            id="username"
+            placeholder="6-25 characters"
+            required
+            ref={userNameInputRef}
+          />
         </div>
         <div className={classes.control}>
           <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
+            placeholder="6-25 characters"
             required
             ref={passwordInputRef}
           />
         </div>
         <div className={classes.actions}>
-          {!isLoading && (
-            <button>{isLogin ? "Login" : "Create Account"}</button>
-          )}
+          {!isLoading && <button className="btn-primary">Login</button>}
           {isLoading && <p>Sending request...</p>}
-          <button type="button" className={classes.toggle}></button>
         </div>
       </form>
     </section>

@@ -81,19 +81,43 @@ const AuthForm = () => {
       <form onSubmit={submitHandler}>
         <div className={classes.control}>
           <label htmlFor="username">Username</label>
-          <input type="text" id="username" required ref={userNameInputRef} />
+          <input
+            type="text"
+            id="username"
+            placeholder="6-25 characters"
+            required
+            ref={userNameInputRef}
+          />
         </div>
         <div className={classes.control}>
           <label htmlFor="first-name">First Name</label>
-          <input type="text" id="first-name" required ref={firstNameInputRef} />
+          <input
+            type="text"
+            id="first-name"
+            placeholder="Less than 46 characters"
+            required
+            ref={firstNameInputRef}
+          />
         </div>
         <div className={classes.control}>
           <label htmlFor="last-name">Last Name</label>
-          <input type="text" id="last-name" required ref={lastNameInputRef} />
+          <input
+            type="text"
+            id="last-name"
+            placeholder="Less than 46 characters"
+            required
+            ref={lastNameInputRef}
+          />
         </div>
         <div className={classes.control}>
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" required ref={emailInputRef} />
+          <input
+            type="email"
+            id="email"
+            placeholder="E.g: abc@admin.com"
+            required
+            ref={emailInputRef}
+          />
         </div>
         <div className={classes.control}>
           <label htmlFor="password">Password</label>
@@ -101,6 +125,7 @@ const AuthForm = () => {
             type="password"
             id="password"
             required
+            placeholder="6 to 25 characters"
             ref={passwordInputRef}
           />
         </div>

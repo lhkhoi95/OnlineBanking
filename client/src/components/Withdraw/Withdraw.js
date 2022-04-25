@@ -12,7 +12,7 @@ function Withdraw(props) {
   const history = useHistory();
   const [errorMessage, setErrorMessage] = useState();
   const [isValid, setIsValid] = useState(false);
-  
+
   const withdrawHandler = (event) => {
     event.preventDefault();
     const enteredPincode = pincode.current.value;
@@ -68,7 +68,7 @@ function Withdraw(props) {
   return (
     <div className="container">
       {props.accounts.length === 0 && (
-        <p className="text-primary">You need to open a bank account first.</p>
+        <p>You need to open a bank account first</p>
       )}
       {props.accounts.length !== 0 && (
         <div>

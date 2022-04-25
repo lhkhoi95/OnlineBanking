@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import BankAccount from "./BankAccount/BankAccount";
 
-function BankAccountList() {
+function BankAccountList(props) {
   const [bankAccounts, setBankAccounts] = useState([]);
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
@@ -38,11 +38,8 @@ function BankAccountList() {
     setIsLoading(false);
   }, []);
 
-  let content = (
-    <p className="w-25 m-5 pb-5 bg-info text-center">
-      You have no bank accounts.
-    </p>
-  );
+  // display bank accounts to browser
+  let content = <div className="container">You have no bank accounts.</div>;
   if (!isLoading && bankAccounts.length !== 0) {
     content = bankAccounts.map((account, index) => (
       <BankAccount key={index} id={account.id} balance={account.balance} />

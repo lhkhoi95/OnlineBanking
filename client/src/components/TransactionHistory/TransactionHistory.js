@@ -36,10 +36,10 @@ function TransactionHistory() {
     setIsLoading(false);
   }, []);
 
-  let content = <p>You have no transactions</p>;
+  let content = <p className="container">You have no transactions</p>;
   if (transactions.length > 0) {
     content = (
-      <table className="container table table-bordered">
+      <table className="table table-bordered container">
         <caption>Transaction History</caption>
         <thead>
           <tr>
@@ -48,6 +48,7 @@ function TransactionHistory() {
             <th scope="col">Amount</th>
             <th scope="col">Date</th>
             <th scope="col">Check Image </th>
+            <th scope="col">Type</th>
           </tr>
         </thead>
         {transactions.map((t, index) => {
@@ -69,6 +70,7 @@ function TransactionHistory() {
                   </td>
                 ) : (
                   <td className="text-danger">
+                    {console.log(t.transfer_amount.substring())}
                     {"-" +
                       parseFloat(t.transfer_amount.substring(2)).toLocaleString(
                         "en-US",
@@ -81,18 +83,20 @@ function TransactionHistory() {
                 )}
                 <td>{t.date}</td>
                 <td>
-                  {t.transfer_amount.includes("+") && (
-                    <button
-                      className="btn-primary submit-button"
-                      type="button"
-                      onClick={() => {
-                        window.open(t.url);
-                      }}
-                    >
-                      View
-                    </button>
-                  )}
+                  {t.transfer_amount.includes("+") &&
+                    t.transaction_type.includes("Deposit") && (
+                      <button
+                        className="btn-primary submit-button"
+                        type="button"
+                        onClick={() => {
+                          window.open(t.url);
+                        }}
+                      >
+                        View
+                      </button>
+                    )}
                 </td>
+                <td>{t.transaction_type}</td>
               </tr>
             </tbody>
           );
@@ -103,7 +107,7 @@ function TransactionHistory() {
   return (
     <div>
       {!isLoading && content}
-      {isLoading && <p className="text-primary">Loading...</p>}
+      {isLoading && <p>Loading...</p>}
     </div>
   );
 }

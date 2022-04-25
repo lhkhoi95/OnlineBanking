@@ -28,7 +28,7 @@ function Validation(props) {
     props.password.length < 6 ||
     props.password.length > 25
   ) {
-    message[0] = "Username and password must be between 6-25 characters";
+    message[0] = "Username and password must be between 6 to 25 characters";
     return message;
   } else if (props.firstName.length >= 46 || props.lastName.length >= 46) {
     message[0] = "First name and last name cannot be longer than 46 characters";
