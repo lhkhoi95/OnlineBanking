@@ -2,6 +2,7 @@ import { useContext, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import "./CreateNewAccount.css";
+import HashLoader from "react-spinners/ClipLoader";
 
 function CreateNewAccount() {
   const pincode = useRef();
@@ -10,6 +11,7 @@ function CreateNewAccount() {
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
   const authCtx = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validatePincodes = (pincode, confirmPincode) => {
     return pincode === confirmPincode;
@@ -23,6 +25,7 @@ function CreateNewAccount() {
       setIsValid(false);
       setErrorMessage("Inputs must match");
     } else {
+      setIsLoading(true);
       fetch("http://localhost:5000/openBankAccount", {
         method: "POST",
         // remember to include JSON.stringigy
@@ -58,7 +61,16 @@ function CreateNewAccount() {
           }
         });
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
+
+  let loadingContent = (
+    <div className="sweet-loading">
+      <HashLoader size={20} color="grey" />
+    </div>
+  );
 
   return (
     <div className="container">
@@ -90,11 +102,19 @@ function CreateNewAccount() {
             ref={pincodeCheck}
           />
         </div>
-        <button className="btn btn-primary">Open Bank Account</button>
+        {isLoading ? (
+          loadingContent
+        ) : (
+          <button className="btn btn-primary">Open Bank Account</button>
+        )}
       </form>
       <div className="error-message">
-        {!isValid && <p className="text-danger">{errorMessage}</p>}
-        {isValid && <p className="text-success">Bank account created</p>}
+        {!isValid && !isLoading && (
+          <p className="text-danger">{errorMessage}</p>
+        )}
+        {isValid && !isLoading && (
+          <p className="text-success">Bank account created</p>
+        )}
       </div>
     </div>
   );

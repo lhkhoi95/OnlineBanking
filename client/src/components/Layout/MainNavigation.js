@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../store/auth-context";
 import classes from "./MainNavigation.module.css";
+import logo from "./images/logo.png";
 
 const MainNavigation = () => {
   const authCtx = useContext(AuthContext);
@@ -16,7 +17,18 @@ const MainNavigation = () => {
   return (
     <header className={classes.header}>
       <Link to="/">
-        <div className={classes.logo}>Online Banking</div>
+        <div className={classes.logo}>
+          <img
+            height="50"
+            width="50"
+            className="mb-3"
+            src={logo}
+            alt={
+              '<a href="https://www.flaticon.com/free-icons/business-and-finance" title="business and finance icons">Business and finance icons created by Linector - Flaticon</a>'
+            }
+          ></img>
+          Purple Bank
+        </div>
       </Link>
       <nav>
         <ul>

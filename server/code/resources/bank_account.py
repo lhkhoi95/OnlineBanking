@@ -70,7 +70,7 @@ class Deposit(Resource):
         bank_account_parser.add_argument("url",
                             type=str,
                             required=True,
-                            help="check image url cannot be left blank!"
+                            help="url for check image cannot be left blank!"
                             )
         
         data = bank_account_parser.parse_args()
@@ -143,6 +143,10 @@ class TransferMoney(Resource):
                         required=True,
                         help="recipient_email cannot be left blank!"
                         )
+    parser.add_argument("description", 
+                        type=str,
+                        required=False
+                        )
     
     @classmethod
     @jwt_required()
@@ -164,7 +168,7 @@ class TransferMoney(Resource):
         if recipient_first_account[1] != 302:
             return {'message' : recipient_first_account[0]['message']}, recipient_first_account[1]
         
-        message = sender_account.transfer(recipient_first_account[0], data['money']) # transfer money from sender to recipient
+        message = sender_account.transfer(recipient_first_account[0], data['money'], description=data['description']) # transfer money from sender to recipient
 
         return {'message': message[0]['message']}, message[1] # OK or 500
 

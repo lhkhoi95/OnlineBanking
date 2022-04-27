@@ -1,7 +1,8 @@
-import { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import "./TransactionHistory.css";
+import Popup from "reactjs-popup";
 
 function TransactionHistory() {
   const history = useHistory();
@@ -36,6 +37,10 @@ function TransactionHistory() {
     setIsLoading(false);
   }, []);
 
+  function viewPopup(message) {
+    alert(message);
+  }
+
   let content = <p className="container">You have no transactions</p>;
   if (transactions.length > 0) {
     content = (
@@ -47,7 +52,7 @@ function TransactionHistory() {
             <th scope="col">Bank ID</th>
             <th scope="col">Amount</th>
             <th scope="col">Date</th>
-            <th scope="col">Check Image </th>
+            <th scope="col">Description </th>
             <th scope="col">Type</th>
           </tr>
         </thead>
@@ -86,14 +91,28 @@ function TransactionHistory() {
                   {t.transfer_amount.includes("+") &&
                     t.transaction_type.includes("Deposit") && (
                       <button
-                        className="btn-primary submit-button"
+                        className="submit-button"
                         type="button"
                         onClick={() => {
-                          window.open(t.url);
+                          window.open(t.description);
                         }}
                       >
-                        View
+                        View Check
                       </button>
+                    )}
+                  {t.transaction_type.includes("Transfer") &&
+                    t.transaction_type !== undefined && (
+                      <Popup
+                        trigger={
+                          <button className="submit-button">
+                            {" "}
+                            View Message
+                          </button>
+                        }
+                        position="right center"
+                      >
+                        <div>{t.description}</div>
+                      </Popup>
                     )}
                 </td>
                 <td>{t.transaction_type}</td>

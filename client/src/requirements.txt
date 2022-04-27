@@ -1,1 +1,4 @@
 npm install cloudinary-react --save
+
+
+npm install reactjs-popup --save

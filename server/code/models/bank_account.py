@@ -37,14 +37,14 @@ class BankAccountModel(db.Model):
         self.passcode = passcode
         self.is_active = is_active
         
-    def deposit(self, bank_id, money, url):
+    def deposit(self, bank_id, money, description):
         try:
             # retrieve account with given bank_id
             account = BankAccountModel.query.get(bank_id)
             # update balance
             account.balance += money
             # add to transaction history
-            transaction_history = TransactionHistoryModel(bank_id, f"+${money}", datetime.now(), url, "Deposit")
+            transaction_history = TransactionHistoryModel(bank_id, f"+${money}", datetime.now(), description=description, type="Deposit")
 
             transaction_history.save_to_db()
             db.session.commit()
@@ -68,16 +68,16 @@ class BankAccountModel(db.Model):
             db.session.rollback()
             return {'message': 'Cannot withdraw due to Internal Server Error'}, 500 # Internal Server Error
         
-    def transfer(self, recipient_account, money):
+    def transfer(self, recipient_account, money, description):
         try:
             # withdraw money from the sender and add to transaction history
             self.balance -= money
-            transaction_history = TransactionHistoryModel(self.id, f"-${money}", datetime.now(), type="Transfer")
+            transaction_history = TransactionHistoryModel(self.id, f"-${money}", datetime.now(), description=description, type="Transfer")
             transaction_history.save_to_db()
 
             # deposit money to the recipient and add to transaction history
             recipient_account.balance += money
-            transaction_history = TransactionHistoryModel(recipient_account.id, f"+${money}", datetime.now(), type="Transfer")
+            transaction_history = TransactionHistoryModel(recipient_account.id, f"+${money}", datetime.now(), description=description, type="Transfer")
             transaction_history.save_to_db()
 
             db.session.commit()

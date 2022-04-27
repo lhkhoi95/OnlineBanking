@@ -30,10 +30,64 @@ caption {
   }
 
 .submit-button {
-    border-radius: 10px;
+    border-radius: 5px;
     font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+    background-color:#d5c8fa;
+    border-color:#e6c8fa;
+    color: black;
 }
 
 .submit-button:hover {
-    background-color: #262fb1;
+    background-color: #c273e0cc;
+    border-color:#e6c8fa;
+    color: black;
+    transform: translateY(-1px);
 }
+
+.popup-content {
+    margin: auto;
+    border:2px dashed rgb(245, 231, 82);
+    background: rgb(71, 224, 224);
+    width: 50%;
+    font-size:large;
+    padding: 5px;
+  }
+  .popup-arrow {
+    color: #ec37dd;
+  }
+  [role='tooltip'].popup-content {
+    width: 200px;
+    box-shadow: rgba(212, 16, 16, 0.16) 0px 0px 3px;
+  }
+  
+  .popup-overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  [data-popup='tooltip'].popup-overlay {
+    background: transparent;
+  }
+
+  @keyframes anvil {
+    0% {
+      transform: scale(1) translateY(0px);
+      opacity: 0;
+      box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+    }
+    1% {
+      transform: scale(0.96) translateY(10px);
+      opacity: 0;
+      box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+    }
+    100% {
+      transform: scale(1) translateY(0px);
+      opacity: 1;
+      box-shadow: 0 0 500px rgba(241, 241, 241, 0);
+    }
+  }
+  .popup-content {
+    -webkit-animation: anvil 0.3s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+  }

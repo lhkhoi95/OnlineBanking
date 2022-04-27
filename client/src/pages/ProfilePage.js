@@ -4,6 +4,7 @@ import AuthContext from "../store/auth-context";
 import { useContext } from "react";
 const ProfilePage = () => {
   const authCtx = useContext(AuthContext);
+
   return (
     <div>
       {authCtx.isLoggedIn && <UserProfile />}

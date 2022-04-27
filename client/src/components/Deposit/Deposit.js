@@ -94,6 +94,7 @@ function Deposit(props) {
         setImageURL(data.url);
       } catch (error) {
         // token expired, log the user out
+        setErrorMessage(error.message);
         console.log(error.message);
       }
     };

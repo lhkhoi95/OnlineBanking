@@ -2,13 +2,15 @@ import { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import BankAccount from "./BankAccount/BankAccount";
+import DotLoader from "react-spinners/DotLoader";
 
 function BankAccountList(props) {
   const [bankAccounts, setBankAccounts] = useState([]);
   const history = useHistory();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   // retrieve the token
   const authCtx = useContext(AuthContext);
+
   useEffect(() => {
     setIsLoading(true);
     // fetch the list of bank accounts from api
@@ -35,17 +37,24 @@ function BankAccountList(props) {
           history.replace("/login");
         }
       });
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
   }, []);
 
   // display bank accounts to browser
-  let content = <div className="container">You have no bank accounts.</div>;
-  if (!isLoading && bankAccounts.length !== 0) {
+  let content = "You have no bank account.";
+  let loadingContent = (
+    <div className="d-flex justify-content-center flex-nowrap">
+      <DotLoader color="rgb(72, 15, 99);;" size={250} />
+    </div>
+  );
+  if (bankAccounts.length !== 0) {
     content = bankAccounts.map((account, index) => (
       <BankAccount key={index} id={account.id} balance={account.balance} />
     ));
   }
-  return <div>{content}</div>;
+  return <div>{isLoading ? loadingContent : content}</div>;
 }
 
 export default BankAccountList;

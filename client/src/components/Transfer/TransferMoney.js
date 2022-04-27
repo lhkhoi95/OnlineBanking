@@ -9,6 +9,7 @@ function TransferMoney() {
   const pincode = useRef();
   const money = useRef();
   const email = useRef();
+  const message = useRef("");
   const authCtx = useContext(AuthContext);
   const history = useHistory();
   const [errorMessage, setErrorMessage] = useState();
@@ -51,6 +52,11 @@ function TransferMoney() {
     const enteredAmount = money.current.value;
     const enteredPasscode = pincode.current.value;
     const enteredEmail = email.current.value;
+    let enteredMessage = message.current.value;
+
+    if (enteredMessage.length === 0) {
+      enteredMessage = "No Message";
+    }
 
     const fetchData = async () => {
       setIsLoading(true);
@@ -62,6 +68,7 @@ function TransferMoney() {
             money: enteredAmount,
             passcode: enteredPasscode,
             recipient_email: enteredEmail,
+            description: enteredMessage,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -156,7 +163,23 @@ function TransferMoney() {
             />
           </div>
         </div>
-        <button onClick={submitHandler} className="btn btn-primary">
+        <div className="mb-3">
+          <label className="form-label" htmlFor="description">
+            Description
+          </label>
+          <div className="input-group">
+            <textarea
+              id="w3review"
+              name="w3review"
+              rows="4"
+              cols="30"
+              maxlength="100"
+              placeholder="What's it for? (100 characters)"
+              ref={message}
+            ></textarea>
+          </div>
+        </div>
+        <button type="submit" className="btn btn-primary">
           Send
         </button>
       </form>
