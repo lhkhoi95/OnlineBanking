@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import BankAccount from "./BankAccount/BankAccount";
-import DotLoader from "react-spinners/DotLoader";
+import HashLoader from "react-spinners/HashLoader";
 
 function BankAccountList(props) {
   const [bankAccounts, setBankAccounts] = useState([]);
@@ -46,7 +46,7 @@ function BankAccountList(props) {
   let content = "You have no bank account.";
   let loadingContent = (
     <div className="d-flex justify-content-center flex-nowrap">
-      <DotLoader color="rgb(72, 15, 99);;" size={250} />
+      <HashLoader color="#370665" size={100} />
     </div>
   );
   if (bankAccounts.length !== 0) {

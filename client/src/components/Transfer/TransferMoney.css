@@ -12,3 +12,8 @@ div.error-message p {
     border-radius: 50px;
     color: rgb(17, 13, 22);
 }
+
+.loading-spinner {
+    text-align: center;
+    padding-top: 50px;
+}

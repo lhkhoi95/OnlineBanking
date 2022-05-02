@@ -1,17 +1,18 @@
 import { useState, useRef, useContext } from "react";
 import Validation from "./Validation";
-import classes from "./Login.module.css";
+import "./Login.css";
 import AuthContext from "../../store/auth-context";
 import { useHistory } from "react-router-dom";
+import Login from "./images/login.png";
+import RingLoader from "react-spinners/RingLoader";
 
 const AuthForm = () => {
   const authCtx = useContext(AuthContext);
   const history = useHistory(); // use to redirect
   const userNameInputRef = useRef();
   const passwordInputRef = useRef();
-  const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [isValid, setIsValid] = useState(true);
+  const [isValid, setIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState(["", true]);
 
   const submitHandler = (event) => {
@@ -25,82 +26,88 @@ const AuthForm = () => {
       username: enteredUsername,
       password: enteredPassword,
     };
-    setIsLoading(true);
+
     const msg = Validation(user);
     console.log(msg);
 
     if (!msg[1]) {
-      setIsValid(false);
       setErrorMessage([msg[0], msg[1]]);
     } else {
-      fetch("http://localhost:5000/login", {
-        method: "POST",
-        body: JSON.stringify({
-          username: enteredUsername,
-          password: enteredPassword,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => {
-          if (res.ok) {
-            setIsValid(true);
-            console.log("Logged In!");
-            return res.json();
-          } else {
-            return res.json().then((data) => {
-              setIsValid(false);
-              console.log(data);
-              // throw error message
-              throw new Error(data.message);
-            });
+      const fetchData = async () => {
+        setIsLoading(true);
+        try {
+          const response = await fetch("http://127.0.0.1:5000/login", {
+            method: "POST",
+            body: JSON.stringify({
+              username: enteredUsername,
+              password: enteredPassword,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await response.json();
+          console.log(data);
+
+          if (!response.ok) {
+            setErrorMessage(data.message);
+            throw new Error(data.message);
           }
-        })
-        .then((data) => {
+          setIsValid(true);
           // set access_token to auth-context
           authCtx.login(data.access_token);
           history.replace("/profile");
-        })
-        .catch((err) => {
-          msg[0] = err.message;
+        } catch (error) {
+          setIsValid(false);
+          msg[0] = error.message;
           setErrorMessage([msg[0], msg[1]]);
-        });
+        }
+      };
+      fetchData();
     }
-
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
   };
 
   return (
-    <section className={classes.auth}>
-      {!isValid && <p className={classes.failure}>{errorMessage[0]}</p>}
-      <h1>Login</h1>
-      <form onSubmit={submitHandler}>
-        <div className={classes.control}>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            placeholder="6-25 characters"
-            required
-            ref={userNameInputRef}
-          />
-        </div>
-        <div className={classes.control}>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="6-25 characters"
-            required
-            ref={passwordInputRef}
-          />
-        </div>
-        <div className={classes.actions}>
-          {!isLoading && <button className="btn-primary">Login</button>}
-          {isLoading && <p>Sending request...</p>}
-        </div>
-      </form>
+    <section className="auth">
+      {!isValid && !isLoading ? (
+        <p className="failure">{errorMessage[0]}</p>
+      ) : (
+        <p className="failure"></p>
+      )}
+      <div className="text-center">
+        <img className="img-thumbnail" src={Login}></img>
+        <h1>Login</h1>
+        <form onSubmit={submitHandler}>
+          <div className="control">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              autoFocus={true}
+              placeholder="6-25 characters"
+              required
+              ref={userNameInputRef}
+            />
+          </div>
+          <div className="control">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="6-25 characters"
+              required
+              ref={passwordInputRef}
+            />
+          </div>
+          <div className="actions">
+            {!isLoading && <button className="btn-primary">Login</button>}
+            {isLoading && <RingLoader size="32px" color="grey" />}
+          </div>
+        </form>
+      </div>
     </section>
   );
 };

@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import "./TransactionHistory.css";
 import Popup from "reactjs-popup";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 function TransactionHistory() {
   const history = useHistory();
@@ -34,12 +35,10 @@ function TransactionHistory() {
       }
     };
     fetchData();
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }, []);
-
-  function viewPopup(message) {
-    alert(message);
-  }
 
   let content = <p className="container">You have no transactions</p>;
   if (transactions.length > 0) {
@@ -75,7 +74,7 @@ function TransactionHistory() {
                   </td>
                 ) : (
                   <td className="text-danger">
-                    {console.log(t.transfer_amount.substring())}
+                    {/* {console.log(t.transfer_amount.substring())} */}
                     {"-" +
                       parseFloat(t.transfer_amount.substring(2)).toLocaleString(
                         "en-US",
@@ -125,8 +124,13 @@ function TransactionHistory() {
   }
   return (
     <div>
-      {!isLoading && content}
-      {isLoading && <p>Loading...</p>}
+      {isLoading ? (
+        <div className="loading-spinner">
+          <PropagateLoader color="grey" />
+        </div>
+      ) : (
+        content
+      )}
     </div>
   );
 }

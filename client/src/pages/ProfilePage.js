@@ -1,3 +1,4 @@
+import React from "react";
 import UserProfile from "../components/Profile/UserProfile";
 import BankAccountList from "../components/Profile/BankAccounts";
 import AuthContext from "../store/auth-context";

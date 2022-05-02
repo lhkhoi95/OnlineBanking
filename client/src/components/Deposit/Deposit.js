@@ -1,18 +1,54 @@
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import "./Deposit.css";
+import PropagateLoader from "react-spinners/PropagateLoader";
+import PulseLoader from "react-spinners/PulseLoader";
 
-function Deposit(props) {
+function Deposit() {
   const bankID = useRef();
   const pincode = useRef();
   const money = useRef();
   const authCtx = useContext(AuthContext);
   const history = useHistory();
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [imageURL, setImageURL] = useState("");
+  const [isNotValidImage, setIsNotValidImage] = useState(true);
+  const [imageFrame, setImageFrame] = useState(false);
+  const [accountList, setAccountList] = useState([]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/bankAccounts", {
+          headers: {
+            Authorization: "Bearer " + authCtx.token,
+          },
+        });
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+
+        const data = await response.json();
+        setAccountList(data.bank_accounts);
+      } catch (error) {
+        setIsValid(false);
+        // token expired, log the user out
+        if (error.message === "401") {
+          alert("Token expired. Please login again");
+          authCtx.logout();
+          history.replace("/login");
+        }
+      }
+    };
+    fetchData();
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
   const depositHandler = (event) => {
     event.preventDefault();
@@ -20,60 +56,63 @@ function Deposit(props) {
     const enteredPincode = pincode.current.value;
     const enteredDepositAmount = money.current.value;
     const enteredBankID = bankID.current.value;
-
-    // console.log("Selected Bank ID = " + enteredBankID);
-    // console.log("Image URL: " + typeof imageURL);
+    console.log(imageURL);
     if (imageURL.length === 0) {
       setErrorMessage("Please upload the check image");
     } else {
-      fetch("http://localhost:5000/deposit", {
-        method: "POST",
-        // remember to include JSON.stringigy
-        body: JSON.stringify({
-          id: enteredBankID,
-          passcode: enteredPincode,
-          money: enteredDepositAmount,
-          url: imageURL,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + authCtx.token,
-        },
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            return res.json().then((data) => {
-              setIsValid(false);
-              setErrorMessage(data.message);
-              console.log(data);
-              throw new Error(res.status);
-            });
-          }
-        })
-        .then((data) => {
-          setIsValid(true);
+      const fetchData = async () => {
+        setIsLoading(true);
+        try {
+          const response = await fetch("http://127.0.0.1:5000/deposit", {
+            method: "POST",
+            body: JSON.stringify({
+              id: enteredBankID,
+              passcode: enteredPincode,
+              money: enteredDepositAmount,
+              url: imageURL,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + authCtx.token,
+            },
+          });
+          const data = await response.json();
           console.log(data);
-        })
-        .catch((err) => {
-          if (err.message === "401") {
+          setIsValid(true);
+          if (!response.ok) {
+            setErrorMessage(data.message);
+            throw new Error(response.status);
+          }
+        } catch (error) {
+          console.log(errorMessage);
+          if (errorMessage !== "") {
+            setErrorMessage("Something went wrong");
+          }
+          setIsValid(false);
+          // token expired, log the user out
+          if (error.message === "401") {
             alert("Token expired. Please login again");
             authCtx.logout();
             history.replace("/login");
           }
-        });
-
-      pincode.current.value = "";
-      money.current.value = "";
+        }
+      };
+      fetchData();
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
-    setIsLoading(false);
+    setImageURL("");
+    pincode.current.value = "";
+    money.current.value = "";
+    setIsNotValidImage(true);
   };
 
   const uploadImage = (files) => {
     const formData = new FormData();
     formData.append("file", files[0]);
     formData.append("upload_preset", "j1omallt");
+    setIsNotValidImage(true);
 
     const uploadToCloud = async () => {
       try {
@@ -88,31 +127,52 @@ function Deposit(props) {
           setIsValid(false);
           throw new Error(response.status);
         }
-
+        const imageType = ["jpg", "jpeg", "png"];
         const data = await response.json();
-        console.log(data.url);
+        if (!imageType.includes(data.format.toLowerCase())) {
+          console.log("WRONG FORMAT");
+          throw new Error("Invalid image format");
+        }
+        setIsNotValidImage(false);
+        setImageFrame(true);
+        setErrorMessage("");
+        console.log(data.format);
         setImageURL(data.url);
       } catch (error) {
+        setImageFrame(false);
         // token expired, log the user out
-        setErrorMessage(error.message);
-        console.log(error.message);
+        if (error.message === "401") {
+          alert("Token expired. Please login again");
+          authCtx.logout();
+          history.replace("/login");
+        }
+        if (error.message === "400") {
+          setErrorMessage("Invalid image format");
+        } else {
+          setErrorMessage(error.message);
+        }
       }
     };
+    console.log("Finished");
+
     uploadToCloud();
   };
-
+  let classFrame = "image-frame";
+  if (!imageFrame) {
+    classFrame = "image-frame-fail";
+  }
   let content = <p>You need to open a bank account first</p>;
-  if (props.accounts.length !== 0) {
+  if (accountList.length > 0) {
     content = (
       <div>
         <h2>Deposit Check</h2>
         <form onSubmit={depositHandler}>
           <div className="mb-3">
             <label htmlFor="formFile" className="form-label">
-              Image Check
+              Check Image
             </label>
             <input
-              className="form-control"
+              className={`form-control ${classFrame}`}
               onChange={(event) => {
                 uploadImage(event.target.files);
               }}
@@ -120,9 +180,10 @@ function Deposit(props) {
               id="formFile"
             />
           </div>
+
           <div className="mb-3">
             <select id="bankIDs" ref={bankID}>
-              {props.accounts.map((account, index) => {
+              {accountList.map((account, index) => {
                 return (
                   <option key={index} value={account.id}>
                     Bank ID: {account.id}
@@ -141,6 +202,7 @@ function Deposit(props) {
               id="pincode"
               className="form-control"
               required
+              disabled={isNotValidImage}
               ref={pincode}
             />
           </div>
@@ -161,20 +223,25 @@ function Deposit(props) {
                 id="amount"
                 className="form-control"
                 required
+                disabled={isNotValidImage}
                 ref={money}
               />
             </div>
           </div>
+
           <button className="btn btn-primary">Deposit</button>
         </form>
       </div>
     );
   }
   return (
-    <div className="container">
-      {isLoading && <p>Loading...</p>}
-      {!isLoading && (
-        <div>
+    <div>
+      {isLoading ? (
+        <div className="loading-spinner">
+          <PropagateLoader color="grey" />
+        </div>
+      ) : (
+        <div className="container">
           {content}
           <div className="error-message">
             {!isValid && <p className="text-danger">{errorMessage}</p>}

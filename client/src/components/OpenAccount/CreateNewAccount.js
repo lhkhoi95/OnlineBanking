@@ -2,7 +2,7 @@ import { useContext, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import "./CreateNewAccount.css";
-import HashLoader from "react-spinners/ClipLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function CreateNewAccount() {
   const pincode = useRef();
@@ -68,7 +68,7 @@ function CreateNewAccount() {
 
   let loadingContent = (
     <div className="sweet-loading">
-      <HashLoader size={20} color="grey" />
+      <ClipLoader size={20} color="grey" />
     </div>
   );
 

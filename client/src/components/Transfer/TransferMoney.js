@@ -2,6 +2,7 @@ import React, { useContext, useState, useRef, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import "./TransferMoney.css";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 function TransferMoney() {
   // transfer needs 4 inputs: id, money, passcode, and recipient's email
@@ -43,7 +44,9 @@ function TransferMoney() {
       }
     };
     fetchData();
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }, []);
 
   function submitHandler(event) {
@@ -93,7 +96,9 @@ function TransferMoney() {
       }
     };
     fetchData();
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }
 
   let content = <p>You need to open a bank account first</p>;
@@ -173,7 +178,7 @@ function TransferMoney() {
               name="w3review"
               rows="4"
               cols="30"
-              maxlength="100"
+              maxLength="100"
               placeholder="What's it for? (100 characters)"
               ref={message}
             ></textarea>
@@ -187,10 +192,13 @@ function TransferMoney() {
   }
 
   return (
-    <div className="container parent-container">
-      {isLoading && <p>Loading...</p>}
-      {!isLoading && (
-        <div>
+    <div>
+      {isLoading ? (
+        <div className="loading-spinner">
+          <PropagateLoader color="grey" size="20px" />
+        </div>
+      ) : (
+        <div className="container parent-container">
           {content}
           <div className="error-message">
             {!isValid && <p className="text-danger">{errorMessage}</p>}

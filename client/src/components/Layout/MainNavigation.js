@@ -61,6 +61,9 @@ const MainNavigation = () => {
                 <li>
                   <Link to="/transactions">Transactions</Link>
                 </li>
+                <li>
+                  <Link to="/delete">Close Account</Link>
+                </li>
               </div>
             </div>
           )}

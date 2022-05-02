@@ -12,6 +12,7 @@ import WithdrawPage from "./pages/WithdrawPage";
 import DepositPage from "./pages/DepositPage";
 import TransactionHistoryPage from "./pages/TransactionHistoryPage";
 import TransferMoneyPage from "./pages/TransferMoneyPage";
+import CloseAccountPage from "./pages/CloseAccountPage";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -54,6 +55,10 @@ function App() {
         </Route>
         <Route path="/transfer">
           {authCtx.isLoggedIn && <TransferMoneyPage />}
+          {!authCtx.isLoggedIn && <LoginPage />}
+        </Route>
+        <Route path="/delete">
+          {authCtx.isLoggedIn && <CloseAccountPage />}
           {!authCtx.isLoggedIn && <LoginPage />}
         </Route>
         {/* protect front end pages from manually enter route on browser */}
