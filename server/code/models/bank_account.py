@@ -100,7 +100,7 @@ class BankAccountModel(db.Model):
             # delete_record.save_to_db()
             
             account = self.query.filter_by(id=bank_id).first()
-            transaction_history = TransactionHistoryModel(user_id, f"-${account.balance}", datetime.now(), type="Delete")
+            transaction_history = TransactionHistoryModel(bank_id, f"-${account.balance}", datetime.now(), type="Delete")
             account.balance = 0 # the user cash out all money
             account.is_active = False # Disable this account
             # save to transaction history

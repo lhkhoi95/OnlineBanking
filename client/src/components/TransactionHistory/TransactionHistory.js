@@ -104,7 +104,6 @@ function TransactionHistory() {
                       <Popup
                         trigger={
                           <button className="submit-button">
-                            {" "}
                             View Message
                           </button>
                         }
@@ -115,6 +114,7 @@ function TransactionHistory() {
                     )}
                 </td>
                 <td>{t.transaction_type}</td>
+                {console.log(t.transaction_type)}
               </tr>
             </tbody>
           );

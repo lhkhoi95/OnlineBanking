@@ -7,7 +7,6 @@ class DeleteHistory(Resource):
     @jwt_required()
     def get(cls):
         user_id = get_jwt_identity()
-        print("here")
         return {"deleted_accounts" : [x.json() for x in DeleteAccountModel.find_deleted_accounts_by_user_id(user_id)]}
 
 

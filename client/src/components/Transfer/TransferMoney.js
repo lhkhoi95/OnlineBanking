@@ -123,7 +123,7 @@ function TransferMoney() {
           </label>
           <input
             placeholder="4-digit pincode"
-            type="text"
+            type="password"
             id="pincode"
             className="form-control"
             required
@@ -132,7 +132,7 @@ function TransferMoney() {
         </div>
         <div className="mb-3">
           <label className="form-label" htmlFor="email">
-            Email
+            Recipient's Email
           </label>
           <div className="input-group">
             <div className="input-group">

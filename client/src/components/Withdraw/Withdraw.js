@@ -118,7 +118,7 @@ function Withdraw() {
             </label>
             <input
               placeholder="4-digit pincode"
-              type="text"
+              type="password"
               id="pincode"
               className="form-control"
               required
