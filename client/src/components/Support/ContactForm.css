@@ -1,0 +1,13 @@
+.my-label {
+    color:black;
+}
+.message-success {
+    padding-top: 1rem;
+    color: rgb(211, 252, 197);
+}
+
+.message-failure {
+    padding-top: 1rem;
+    color: rgba(240, 80, 59, 0.877);
+}
+

@@ -4,7 +4,9 @@ import welcome from "./images/welcome.jpg";
 const StartingPageContent = () => {
   return (
     <section className={classes.starting}>
-      <h1>Welcome to Purple Bank!</h1>
+      <h2>Welcome to Purple Bank!</h2>
+      <p>A website that makes any transactions faster than ever</p>
+
       <div>
         <img
           className={classes.image}

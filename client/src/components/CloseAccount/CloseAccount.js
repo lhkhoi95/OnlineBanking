@@ -97,7 +97,7 @@ function CloseAccount() {
     content = (
       <div>
         <h2>Close Account</h2>
-        <p>Please select an account to delete, money will be cashed out</p>
+        <p>All your money will be cashed out after the account is deleted.</p>
         <form onSubmit={deleteHandler}>
           <div className="mb-3">
             <select id="bankIDs" ref={bankID}>

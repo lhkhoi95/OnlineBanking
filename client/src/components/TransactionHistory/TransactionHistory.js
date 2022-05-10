@@ -112,9 +112,11 @@ function TransactionHistory() {
                         <div>{t.description}</div>
                       </Popup>
                     )}
+                  {t.transaction_type.includes("Delete") &&
+                    t.transaction_type !== undefined && <p>Cashed out</p>}
                 </td>
                 <td>{t.transaction_type}</td>
-                {console.log(t.transaction_type)}
+                {/* {console.log(t.transaction_type)} */}
               </tr>
             </tbody>
           );

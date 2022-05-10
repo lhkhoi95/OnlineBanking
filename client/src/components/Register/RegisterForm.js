@@ -33,7 +33,7 @@ const AuthForm = () => {
       email: enteredEmail,
     };
     const msg = Validation(user);
-    console.log(msg);
+    // console.log(msg);
     if (!msg[1]) {
       setIsValid(false);
       setErrorMessage([msg[0], msg[1]]);
@@ -55,7 +55,7 @@ const AuthForm = () => {
             },
           });
           const data = await response.json();
-          console.log(data);
+          // console.log(data);
 
           if (!response.ok) {
             setErrorMessage(data.message);

@@ -27,12 +27,17 @@ const UserProfile = () => {
         }
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setUserInformation(data);
       })
       .catch((err) => {
         // token expired, log the user out
         if (err.message === "401") {
+          alert("For your security, your account is logged out after 1 hour.");
+          authCtx.logout();
+          history.replace("/login");
+        } else if (err.message === "Failed to fetch") {
+          alert("Something went wrong. Please login again");
           authCtx.logout();
           history.replace("/login");
         }

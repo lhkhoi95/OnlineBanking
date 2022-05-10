@@ -14,6 +14,7 @@ class TransacionHistory(Resource):
             transactions = TransactionHistoryModel.find_by_bank_id(bank_id[0])
             for t in transactions:
                 history.append(t.json())
+            # print(history)
         return {"transactions" : history}
         # get transaction with corresponding to those bank_ids
 

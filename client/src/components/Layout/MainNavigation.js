@@ -78,6 +78,9 @@ const MainNavigation = () => {
               <button onClick={logoutHandler}>Logout</button>
             </li>
           )}
+          <li>
+            <Link to="/contactUs">Contact Us</Link>
+          </li>
         </ul>
       </nav>
     </header>

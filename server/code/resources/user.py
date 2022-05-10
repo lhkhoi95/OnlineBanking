@@ -64,7 +64,7 @@ class UserRegister(Resource):
         
         # email was used to register
         if UserModel.find_by_email(data['email']):
-            return {"message": "Email already in used"}, 400 # bad request from client
+            return {"message": "Email already in use"}, 400 # bad request from client
         
         # pass the information into the UserModel class.
         user = UserModel(**data)

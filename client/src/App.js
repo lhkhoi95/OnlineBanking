@@ -13,6 +13,7 @@ import DepositPage from "./pages/DepositPage";
 import TransactionHistoryPage from "./pages/TransactionHistoryPage";
 import TransferMoneyPage from "./pages/TransferMoneyPage";
 import CloseAccountPage from "./pages/CloseAccountPage";
+import ContactUsPage from "./pages/ContactUsPage";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -60,6 +61,9 @@ function App() {
         <Route path="/delete">
           {authCtx.isLoggedIn && <CloseAccountPage />}
           {!authCtx.isLoggedIn && <LoginPage />}
+        </Route>
+        <Route path="/contactUs">
+          <ContactUsPage />
         </Route>
         {/* protect front end pages from manually enter route on browser */}
         <Route path="*">

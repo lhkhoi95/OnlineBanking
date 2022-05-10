@@ -56,7 +56,7 @@ function Deposit() {
     const enteredPincode = pincode.current.value;
     const enteredDepositAmount = money.current.value;
     const enteredBankID = bankID.current.value;
-    console.log(imageURL);
+    // console.log(imageURL.length);
     if (imageURL.length === 0) {
       setErrorMessage("Please upload the check image");
     } else {
@@ -77,7 +77,7 @@ function Deposit() {
             },
           });
           const data = await response.json();
-          console.log(data);
+          // console.log(data);
           setIsValid(true);
           if (!response.ok) {
             setErrorMessage(data.message);
@@ -98,14 +98,14 @@ function Deposit() {
         }
       };
       fetchData();
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
     }
     setImageURL("");
     pincode.current.value = "";
     money.current.value = "";
     setIsNotValidImage(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   const uploadImage = (files) => {
@@ -136,7 +136,7 @@ function Deposit() {
         setIsNotValidImage(false);
         setImageFrame(true);
         setErrorMessage("");
-        console.log(data.format);
+        // console.log(data.format);
         setImageURL(data.url);
       } catch (error) {
         setImageFrame(false);
@@ -153,7 +153,7 @@ function Deposit() {
         }
       }
     };
-    console.log("Finished");
+    // console.log("Finished");
 
     uploadToCloud();
   };

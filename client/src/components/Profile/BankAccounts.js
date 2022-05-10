@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import BankAccount from "./BankAccount/BankAccount";
 import HashLoader from "react-spinners/HashLoader";
+import "./BankAccount.css";
 
 function BankAccountList(props) {
   const [bankAccounts, setBankAccounts] = useState([]);
@@ -44,6 +45,7 @@ function BankAccountList(props) {
 
   // display bank accounts to browser
   let content = "You have no bank account.";
+  let bankAccountStyle = "no-bank-account";
   let loadingContent = (
     <div className="d-flex justify-content-center flex-nowrap">
       <HashLoader color="#370665" size={100} />
@@ -53,8 +55,13 @@ function BankAccountList(props) {
     content = bankAccounts.map((account, index) => (
       <BankAccount key={index} id={account.id} balance={account.balance} />
     ));
+    bankAccountStyle = "yes-bank-account";
   }
-  return <div>{isLoading ? loadingContent : content}</div>;
+  return (
+    <div className={bankAccountStyle}>
+      {isLoading ? loadingContent : content}
+    </div>
+  );
 }
 
 export default BankAccountList;
