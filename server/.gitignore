@@ -1,3 +1,9 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# misc
 .DS_Store
 .env
 .flaskenv
@@ -17,6 +23,8 @@ build/
 .idea/
 docs/_build/
 .vscode
+test.py
+data.db
 
 # Coverage reports
 htmlcov/
