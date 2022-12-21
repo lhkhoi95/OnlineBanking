@@ -27,7 +27,7 @@ That should start the back-end server.
 
 Open another terminal and type the following commands (make sure you are in the root folder):<br />
 `cd client`<br />
-`npm install`<br />
+`npm install --legacy-peer-deps`<br />
 `npm start`<br />
 
 That should start the front-end server, and the landing page will be automatically opened by the default browser.
