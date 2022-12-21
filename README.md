@@ -1,19 +1,33 @@
 # OnlineBanking
 
-Open a new terminal and type the following commands:
+Clone the project using this command:
+`git clone https://github.com/lhkhoi95/OnlineBanking.git`
 
-`cd server/code`
-`pip install requirements.txt`
-`python app.py`
+## Installation Guide
+### Softwares Requirements:
+1) Visual Studio Code
+2) NodeJS
+3) Python
 
-That should start the Flask server in the back end.
+### Python Virtual Environment Installation:
+Open a new terminal and type the following commands:<br />
+`cd server` <br />
+`python -m venv venv` <br />
+Windows OS:
+`source venv/Scripts/activate`<br />
+MacOS:
+`source venv/bin/activate`<br />
+The (venv) indicates you have activated the virtual environment.
 
-Open another terminal and type the following commands (make sure you are at the root folder):
+#### Back-end libraries installation:
+`cd code` <br />
+`pip install -r requirements.txt` <br />
+`python app.py` <br />
+That should start the back-end server.
 
-`cd client`
-`npm install`
-`npm start`
+Open another terminal and type the following commands (make sure you are in the root folder):<br />
+`cd client`<br />
+`npm install`<br />
+`npm start`<br />
 
-That should start the React server in the front end.
-
-Make sure to have Python and NodeJS installed on your machine.
+That should start the front-end server, and the landing page will be automatically opened by the default browser.
